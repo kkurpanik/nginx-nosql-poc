@@ -31,7 +31,7 @@
 
 - name: Copy kubeconfig file to manage PoC environment
   copy: 
-    src: /tmp/{{ hostvars[" {{ item }} "]['inventory_hostname'] }}
+    src: /tmp/{{ hostvars[" {{ item }} "]['inventory_hostname'] }}/kube_config_rancher-cluster.yaml 
     dest: /root/nginx-nosql-poc-{{ item }}.yaml
     owner: root
     group: root
