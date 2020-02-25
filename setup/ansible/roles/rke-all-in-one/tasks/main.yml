@@ -37,7 +37,7 @@
     mode: '0755'
 
 - name: Setup rke cluster
-  command: /usr/local/bin/rke up --config rancher-cluster.yml
+  command: /usr/local/bin/rke up --config rancher-cluster.yaml
 
 - name: Fetch kubeconfig from rke cluster
   fetch:
