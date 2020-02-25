@@ -11,7 +11,7 @@ kubectl -n ${NAMESPACE} apply -f ../lab/couchdb/pv.yaml
 kubectl -n ${NAMESPACE} apply -f ../lab/couchdb/pvc.yaml
 kubectl -n ${NAMESPACE} apply -f ../lab/couchdb/secrets.yaml
 kubectl -n ${NAMESPACE} apply -f ../lab/couchdb/deployment.yaml
-kubectl -n ${NAMESPACE} apply -f ../lab/service.yaml
+kubectl -n ${NAMESPACE} apply -f ../lab/couchdb/service.yaml
 
 # deploy mongodb
 kubectl -n ${NAMESPACE} apply -f ../lab/mongodb/pv.yaml
