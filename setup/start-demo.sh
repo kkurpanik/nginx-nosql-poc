@@ -5,8 +5,8 @@ NAMESPACE=k8s-cl1
 
 if [ $1 = "up" ]; then
   # look for couchdb pod name
-  COUCHDB_POD = `kubectl -n ${NAMESPACE} get pods | grep -i couchdb | awk '{print $1}'`
-  MONGODB_POD = `kubectl -n ${NAMESPACE} get pods | grep -i mongodb | awk '{print $1}'`
+  COUCHDB_POD=`kubectl -n ${NAMESPACE} get pods | grep -i couchdb | awk '{print $1}'`
+  MONGODB_POD=`kubectl -n ${NAMESPACE} get pods | grep -i mongodb | awk '{print $1}'`
 
   echo "Forwarding ports..."
   kubectl -n k8s-cl1 port-forward --address 0.0.0.0 ${COUCHDB_POD} 50201:5984 &
