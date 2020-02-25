@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: mongodb
+  revisionHistoryLimit: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        checksums/mongodb.username: "{{ SECRETS_MONGODB_USERNAME | sha256 }}"
+        checksums/mongodb.password: "{{ SECRETS_MONGODB_PASSWORD | sha256 }}"
+      labels:
+        name: mongodb
+    spec:
+      hostNetwork: false
+      hostPID: false
+      hostIPC: false
+      containers:
+        - env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-creds
+                  key: mongodb.username
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-creds
+                  key: mongodb.password
+          image: mongo:4.0.4
+          name: mongodb
+          securityContext:
+            privileged: false
+            readOnlyRootFilesystem: false
+            allowPrivilegeEscalation: false
+            runAsNonRoot: false
+            runAsUser: 0
+            capabilities:
+              add:
+              - SETGID
+              - SETFCAP
+              - CHOWN
+              - SETUID
+              - FOWNER
+              - DAC_OVERRIDE
+              drop:
+              - ALL
+          ports:
+            - containerPort: 27017
+          resources:
+            limits:
+              memory: "1G"
+              cpu: "1"
+            requests:
+              cpu: "0" 
+          readinessProbe:
+            tcpSocket:
+              port: 27017
+          livenessProbe:
+            tcpSocket:
+              port: 27017
+            initialDelaySeconds: 60
+            periodSeconds: 120
+            failureThreshold: 4
+          args: ["--wiredTigerCacheSizeGB", "0.5"]
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongodb-claim0
+      restartPolicy: Always
+      volumes:
+        - name: mongodb-claim0
+          persistentVolumeClaim:
+            claimName: mongodb-claim0

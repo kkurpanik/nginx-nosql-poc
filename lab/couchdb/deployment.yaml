@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: couchdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: couchdb
+  revisionHistoryLimit: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        name: couchdb 
+    spec:
+      hostNetwork: false
+      hostPID: false
+      hostIPC: false
+      containers:
+        - env:
+            - name: COUCHDB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb-creds
+                  key: couchdb.username
+            - name: COUCHDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb-creds
+                  key: couchdb.password
+          image: couchdb:latest
+          name: couchdb
+          securityContext:
+            privileged: false
+            readOnlyRootFilesystem: false
+            allowPrivilegeEscalation: false
+            runAsNonRoot: false
+            runAsUser: 0
+            capabilities:
+              add:
+              - SETGID
+              - CHOWN
+              - FOWNER
+              - SETUID
+              - DAC_OVERRIDE
+              drop:
+              - ALL
+          ports:
+            - containerPort: 5984
+          resources:
+            limits:
+              memory: "1G"
+              cpu: "1"
+            requests:
+              cpu: "0" 
+          volumeMounts:
+            - mountPath: /opt/couchdb/data
+              name: couchdb-claim0
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 5984
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5984
+            initialDelaySeconds: 60
+            periodSeconds: 120
+            failureThreshold: 4
+      restartPolicy: Always
+      volumes:
+        - name: couchdb-claim0
+          persistentVolumeClaim:
+            claimName: couchdb-claim0
