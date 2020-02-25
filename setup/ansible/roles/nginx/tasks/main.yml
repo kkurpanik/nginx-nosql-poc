@@ -29,10 +29,6 @@
     state: restarted
     enabled: yes
 
-- name: Debug inventory loop
-  debug: 
-    msg: "{{ groups.k8s }}"
-
 - name: Copy kubeconfig file to manage PoC environment
   copy: 
     src: /tmp/{{ item }}/kube_config_rancher-cluster.yaml 
