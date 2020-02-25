@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export KUBECONFIG=/root/nginx-nosql-poc.yaml
+NAMESPACE=k8s-cl1
 
 if [ $1 = "up" ]; then
   # look for couchdb pod name
