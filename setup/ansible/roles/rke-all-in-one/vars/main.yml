@@ -1,0 +1,4 @@
+---
+# vars file for rke-all-in-one
+rke_version: v1.0.4
+kubectl_version: v1.17.0

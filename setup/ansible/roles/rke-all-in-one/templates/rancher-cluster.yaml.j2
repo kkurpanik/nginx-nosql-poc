@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+
+nodes:
+- address: "{{ inventory_hostname }}"
+  user: rke
+  role: 
+    - controlplane
+    - worker
+    - etcd
+
+services:
+  etcd:
+    snapshot: true
+    creation: 6h
+    retention: 24h

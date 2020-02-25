@@ -1,0 +1,63 @@
+---
+# tasks file for rke-all-in-one
+
+- name: Configure docker-ce repository
+  yum_repository:
+    name: docker-ce
+    description: Docker CE repository
+    baseurl: https://download.docker.com/linux/centos/docker-ce.repo
+
+- name: Install docker-ce
+  yum:
+    name: docker-ce
+    state: latest
+
+- name: Start and enable docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Create config for rancher cluster
+  template:
+    src: templates/rancher-cluster.yaml.j2
+    dest: rancher-cluster.yaml
+
+- name: Create rke user
+  user:
+    name: rke
+    groups: 
+    - docker
+    append: yes
+
+- name: Generate openssh keypair for root user
+  openssh_keypair:
+    path: /root/.ssh/id_rsa
+    owner: root
+    group: root
+    size: 2048
+
+- name: Register content of ssh public key of user root
+  command: cat /root/.ssh/id_rsa.pub
+  register: rootpubkey
+
+- name: Add user root key to authorized_hosts of rke user
+  authorized_key:
+    user: rke
+    state: present
+    key: "{{ rootpubkey.stdout }}"
+
+- name: Download RKE binary
+  get_url:
+    url: https://github.com/rancher/rke/releases/download/{{ rke_version }}/rke_linux-amd64 
+    dest: /usr/local/bin/rke
+    mode: '0755'
+
+- name: Download kubectl binary
+  get_url:
+    url: https://storage.googleapis.com/kubernetes-release/release/{{ kubectl_version }}/bin/linux/amd64/kubectl
+    dest: /usr/local/bin/kubectl
+    mode: '0755'
+
+- name: Setup rke cluster
+  command: /usr/local/bin/rke up --config rancher-cluster.yml
