@@ -19,7 +19,7 @@
     group: root
     mode: "0644"
     backup: yes
-    with_items:
+  with_items:
     - { source: files/nginx.conf, destination: /etc/nginx/nginx.conf }
     - { source: files/nginx-nosql-poc.conf, destination: /etc/nginx/conf.d/nginx-nosql-poc.conf }
 
