@@ -1,12 +1,11 @@
 ---
-- hosts: webservers
-  remote_user: root
-  roles:
-    - nginx
-    - tools
-
 - hosts: k8s
   remote_user: root
   roles:
     - tools
     - rke-all-in-one
+- hosts: webservers
+  remote_user: root
+  roles:
+    - nginx
+    - tools

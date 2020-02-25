@@ -28,3 +28,11 @@
     name: nginx
     state: restarted
     enabled: yes
+
+- name: Copy kubeconfig file to manage PoC environment
+  copy: 
+    src: nginx-nosql-poc.yaml
+    dest: nginx-nosql-poc.yaml
+    owner: root
+    group: root
+    mode: "0644"
