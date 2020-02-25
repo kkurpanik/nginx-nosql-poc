@@ -11,3 +11,11 @@ This repository contains some deployments and scripts to quickly build a LAB env
 5. Run `deploy-lab.sh` script from nginx host and `nginx-nosql-poc/setup` directory
 6. Run `start-demo.sh up` from nginx host and `nginx-nosql-poc/setup` directory to start a demo
 7. Run `start-demo.sh down` from nginx host and `nginx-nosql-poc/setup` directory to stop a demo
+
+## License
+
+MIT
+
+## Author Information
+
+kkurpanik@gmail.com
