@@ -11,8 +11,20 @@
     name: nginx
     state: latest
 
-- name: Enable nginx server
+- name: Copy nginx config files
+  copy:
+    src: "{{ item.source }}"
+    dest: "{{ item.destination }}"
+    owner: root
+    group: root
+    mode: "0644"
+    backup: yes
+    with_items:
+    - { source: files/nginx.conf, destination: /etc/nginx/nginx.conf }
+    - { source: files/nginx-nosql-poc.conf, destination: /etc/nginx/conf.d/nginx-nosql-poc.conf }
+
+- name: Start and enable nginx server
   service:
     name: nginx
+    state: restarted
     enabled: yes
-
