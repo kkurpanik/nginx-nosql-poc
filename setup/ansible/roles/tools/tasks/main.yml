@@ -1,0 +1,24 @@
+---
+# tasks file for tools
+- name: Configure docker-ce repository
+  yum_repository:
+    name: docker-ce
+    description: Docker CE repository
+    baseurl: https://download.docker.com/linux/centos/docker-ce.repo
+
+- name: Install docker-ce
+  yum:
+    name: docker-ce
+    state: latest
+
+- name: Start and enable docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Download kubectl binary
+  get_url:
+    url: https://storage.googleapis.com/kubernetes-release/release/{{ kubectl_version }}/bin/linux/amd64/kubectl
+    dest: /usr/local/bin/kubectl
+    mode: '0755'
