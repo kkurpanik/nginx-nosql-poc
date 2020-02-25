@@ -51,3 +51,8 @@
   git:
     repo: https://github.com/kkurpanik/nginx-nosql-poc.git
     dest: /root/nginx-nosql-poc
+
+- name: Install docker compose
+  command: pip3 install docker-compose
+  args:
+    warn: no
