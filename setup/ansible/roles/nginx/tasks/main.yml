@@ -42,6 +42,11 @@
     mode: "0644"
   with_items: "{{ groups.k8s }}"
 
+- name: Install git package
+  yum:
+    name: git
+    state: latest
+
 - name: Clone git repo with setup files
   git:
     repo: https://github.com/kkurpanik/nginx-nosql-poc.git
