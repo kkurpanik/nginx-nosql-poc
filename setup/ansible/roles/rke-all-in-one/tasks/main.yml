@@ -42,4 +42,4 @@
 - name: Fetch kubeconfig from rke cluster
   fetch:
     src: kube_config_rancher-cluster.yaml
-    dest: .
+    dest: /tmp

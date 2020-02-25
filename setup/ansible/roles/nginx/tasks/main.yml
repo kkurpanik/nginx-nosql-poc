@@ -31,8 +31,9 @@
 
 - name: Copy kubeconfig file to manage PoC environment
   copy: 
-    src: nginx-nosql-poc.yaml
-    dest: nginx-nosql-poc.yaml
+    src: /tmp/{{ hostvars[" {{ item }} "]['inventory_hostname'] }}
+    dest: /root/nginx-nosql-poc-{{ item }}.yaml
     owner: root
     group: root
     mode: "0644"
+  with_items: groups['k8s']
