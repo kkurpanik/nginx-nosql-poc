@@ -12,9 +12,10 @@ if [ $1 = "up" ]; then
   docker-compose -f ../lab/couchdb-fauxton/docker-compose.yaml up -d
 elif [ $1 = "down" ]; then
   echo "Removing mongo express..."
-  docker-compose -f ../mongo-express/docker-compose.yaml down
+  docker-compose -f ../lab/mongo-express/docker-compose.yaml down
   echo "Removing fauxton..."
-  docker-compose -f ../couchdb-fauxton/docker-compose.yaml down
+  docker-compose -f ../lab/couchdb-fauxton/docker-compose.yaml down
+  
   echo "Killing port forwarders ..."
   if [ -f "kubectl.pid" ]; then 
     for pid in `cat kubectl.pid`; do
