@@ -41,14 +41,14 @@ spec:
               name: mysql-password
               key: mysql.key
         ports:
-        - containerPort: 3168
+        - containerPort: 3306
           name: mariadb
         readinessProbe:
             tcpSocket:
-              port: 3168
+              port: 3306
         livenessProbe:
             exec:
-              command: ["mysqladmin", "ping", "-h", "127.0.0.1", "-P", "3168", "-u", "root",  "-p${MYSQL_ROOT_PASSWORD}", "--skip-ssl"]
+              command: ["mysqladmin", "ping", "-h", "127.0.0.1", "-P", "3306", "-u", "root",  "-p${MYSQL_ROOT_PASSWORD}", "--skip-ssl"]
             initialDelaySeconds: 120
             periodSeconds: 120
             timeoutSeconds: 10
