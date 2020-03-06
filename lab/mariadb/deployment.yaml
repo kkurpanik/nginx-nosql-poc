@@ -30,8 +30,7 @@ spec:
         name: mariadb
         resources:
           requests:
-            memory: "1G"
-            cpu: "1"
+            cpu: "0"
           limits:
             memory: "1G"
             cpu: "1"
