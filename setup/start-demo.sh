@@ -9,14 +9,9 @@ if [ $1 = "up" ]; then
   MONGODB_POD=`kubectl -n ${NAMESPACE} get pods | grep -i mongodb | awk '{print $1}'`
 
   echo "Forwarding ports..."
-  echo "Forwarding ports..."
-  kubectl -n k8s-cl1 port-forward --address 0.0.0.0 ${COUCHDB_POD} 50201:5984 &
+  kubectl -n k8s-cl1 port-forward --address 0.0.0.0 ${COUCHDB_POD} 50201:5984 50203:5984 &
   echo $! >> kubectl.pid
-  kubectl -n k8s-cl1 port-forward --address 0.0.0.0 ${COUCHDB_POD} 50203:5984 &
-  echo $! >> kubectl.pid
-  kubectl -n k8s-cl1 port-forward --address 0.0.0.0 ${MONGODB_POD} 50101:27017 &
-  echo $! >> kubectl.pid
-  kubectl -n k8s-cl1 port-forward --address 0.0.0.0 ${MONGODB_POD} 50103:27017 &
+  kubectl -n k8s-cl1 port-forward --address 0.0.0.0 ${MONGODB_POD} 50101:27017 50103:27017 &
   echo $! >> kubectl.pid
   echo "Starting mongo express..."
   docker-compose -f ../lab/mongo-express/docker-compose.yaml up -d
