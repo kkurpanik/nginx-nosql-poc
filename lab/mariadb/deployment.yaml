@@ -16,13 +16,6 @@ spec:
       hostNetwork: false
       hostPID: false
       hostIPC: false
-      initContainers:
-      - name: init-mysql
-        image: busybox
-        command: ['sh', '-c', 'chmod 777 /var/lib/mysql']
-        volumeMounts:
-        - mountPath: /var/lib/mysql
-          name: mariadb-data
       containers:
       - image: mariadb:latest
         securityContext:
