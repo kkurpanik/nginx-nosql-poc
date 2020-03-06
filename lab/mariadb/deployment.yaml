@@ -25,7 +25,7 @@ spec:
           runAsNonRoot: false
           runAsUser: 0
           capabilities:
-            add: ["SETFCAP", "DAC_OVERRIDE", "FOWNER"]
+            add: ["SETFCAP", "DAC_OVERRIDE", "FOWNER", "CHOWN"]
             drop: ["ALL"]
         name: mariadb
         resources:
