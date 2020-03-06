@@ -25,7 +25,7 @@ spec:
           runAsNonRoot: false
           runAsUser: 0
           capabilities:
-            add: ["SETGID", "SETUID", "DAC_OVERRIDE", "FOWNER", "CHOWN"]
+            add: ["SETFCAP", "SETGID", "SETUID", "DAC_OVERRIDE", "FOWNER", "CHOWN"]
             drop: ["ALL"]
         name: mariadb
         resources:
