@@ -10,3 +10,4 @@ services:
       MYSQL_ROOT_PASSWORD: "password"
       PMA_HOST: 192.168.0.171
       PMA_PORT: 50301
+      PMA_ABSOLUTE_URI: "http://rundeck-lab.local/mariadb/"
