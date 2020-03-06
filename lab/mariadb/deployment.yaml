@@ -16,30 +16,6 @@ spec:
       hostNetwork: false
       hostPID: false
       hostIPC: false
-      initContainers:
-        - image: mariadb:latest
-          name: mysql-upgrade
-          env:
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-password
-                  key: mysql.key
-          command: ['bash', "-c", "/usr/local/bin/run-mysql-upgrade.sh"]
-          securityContext:
-            privileged: false
-            readOnlyRootFilesystem: false
-            allowPrivilegeEscalation: false
-            runAsNonRoot: false
-            runAsUser: 0
-            capabilities:
-              add: ["SETGID", "SETUID", "DAC_OVERRIDE", "FOWNER", "CHOWN"]
-              drop: ["ALL"]
-          volumeMounts:
-            - name: mariadb-data
-              mountPath: /var/lib/mysql
-            - name: mariadb-tmp
-              mountPath: /tmp
       containers:
       - image: mariadb:latest
         securityContext:
