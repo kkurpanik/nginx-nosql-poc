@@ -1,0 +1,12 @@
+version: '2.4'
+
+services:
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - "50300:80"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "password"
+      PMA_HOST: 192.168.0.171
+      PMA_PORT: 50301
