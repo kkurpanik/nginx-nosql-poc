@@ -1,0 +1,28 @@
+
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: mariadb-data-pv0
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /data/mariadb/data
+    type: DirectoryOrCreate
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: mariadb-tmp-pv0
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /data/mariadb/tmp
+    type: DirectoryOrCreate

@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mariadb-data-claim
+  annotations:
+    volume.beta.kubernetes.io/storage-class: standard
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: mariadb-tmp-pv0
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name:  mariadb-tmp-claim
+  annotations:
+    volume.beta.kubernetes.io/storage-class: standard
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: mariadb-data-pv0

@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      name: mariadb
+  template:
+    metadata:
+      labels:
+        name: mariadb
+    spec:
+      hostNetwork: false
+      hostPID: false
+      hostIPC: false
+      initContainers:
+        - image: mariadb:latest
+          name: mysql-upgrade
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-password
+                  key: mysql.key
+          command: ['bash', "-c", "/usr/local/bin/run-mysql-upgrade.sh"]
+          securityContext:
+            privileged: false
+            readOnlyRootFilesystem: false
+            allowPrivilegeEscalation: false
+            runAsNonRoot: false
+            runAsUser: 0
+            capabilities:
+              add: ["SETGID", "SETUID", "DAC_OVERRIDE", "FOWNER", "CHOWN"]
+              drop: ["ALL"]
+          volumeMounts:
+            - name: mariadb-data
+              mountPath: /var/lib/mysql
+            - name: mariadb-tmp
+              mountPath: /tmp
+      containers:
+      - image: mariadb:latest
+        securityContext:
+          privileged: false
+          readOnlyRootFilesystem: false
+          allowPrivilegeEscalation: false
+          runAsNonRoot: false
+          runAsUser: 0
+          capabilities:
+            add: ["SETFCAP", "DAC_OVERRIDE", "FOWNER"]
+            drop: ["ALL"]
+        name: mariadb
+        resources:
+          requests:
+            memory: "1G"
+            cpu: "1"
+          limits:
+            memory: "1G"
+            cpu: "1"
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-password
+              key: mysql.key
+        ports:
+        - containerPort: 3168
+          name: mariadb
+        readinessProbe:
+            tcpSocket:
+              port: 3168
+        livenessProbe:
+            exec:
+              command: ["mysqladmin", "ping", "-h", "127.0.0.1", "-P", "3168", "-u", "root",  "-p${MYSQL_ROOT_PASSWORD}", "--skip-ssl"]
+            initialDelaySeconds: 120
+            periodSeconds: 120
+            timeoutSeconds: 10
+            failureThreshold: 4
+        volumeMounts:
+        - name: mariadb-data
+          mountPath: /var/lib/mysql
+        - name: mariadb-tmp
+          mountPath: /tmp
+      volumes:
+      - name: mariadb-data
+        persistentVolumeClaim:
+          claimName: mariadb-data-claim
+      - name: mariadb-tmp
+        persistentVolumeClaim:
+          claimName: mariadb-tmp-claim
